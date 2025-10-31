@@ -1,81 +1,108 @@
-:root{
-  --blue:#1e88e5;
-  --green:#28a745;
-  --orange:#ff7f50;
-  --card-bg:#ffffff;
-  --bg:#f7fbfc;
-  --muted:#666;
-  --accent:#0a7bdc;
+/* 🌿 Font setup */
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
+  background: linear-gradient(135deg, #1abc9c, #f39c12);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter, "Poppins", Arial, sans-serif;
-  background:var(--bg);
-  color:#222;
-  -webkit-font-smoothing:antialiased;
+/* ✨ Fade animation */
+.fade-in {
+  animation: fadeIn 1.5s ease-in-out;
 }
 
-.topbar{
-  background:var(--blue);
-  color:white;
-  padding:12px 16px;
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.title-block h1{margin:0;font-size:20px}
-.title-block p{margin:2px 0 0;font-size:13px;opacity:0.95}
-
-.controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-select, button{
-  font-size:14px;
-  padding:8px 10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  background:white;
-}
-#detectBtn{background:transparent;color:var(--blue);border:1px solid rgba(255,255,255,0.2)}
-.primary{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
-.secondary{background:#eef3fb;border:1px solid #d9e7fb;color:var(--blue);padding:8px 10px;border-radius:8px;cursor:pointer}
-
-.container{max-width:900px;margin:18px auto;padding:0 12px}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px}
-.card{
-  background:var(--card-bg);
-  padding:14px;
-  border-radius:12px;
-  box-shadow:0 6px 18px rgba(20,30,50,0.06);
-  text-align:left;
-}
-.card h3{margin:0 0 6px;font-size:15px;color:var(--blue)}
-.card p{margin:6px 0;font-size:16px;font-weight:600}
-
-.actions{text-align:center;margin-top:8px}
-
-.chart-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.chart-area{background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(20,30,50,0.06)}
-
-.footer{max-width:900px;margin:20px auto;text-align:center;color:var(--muted);font-size:13px;padding:0 12px}
-
-.hidden{display:none}
-
-/* Responsive */
-@media (max-width:640px){
-  .title-block h1{font-size:18px}
-  .controls{flex-direction:column;align-items:flex-start}
-  .chart-area canvas{width:100%!important;height:auto!important}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+/* 📦 Container */
+.container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px 60px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
 
+/* 🏷 Titles */
+.app-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #fff;
+  letter-spacing: 1px;
+}
 
+.sub-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
 
+/* 🧾 Form */
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: stretch;
+}
 
+label {
+  font-weight: 600;
+  text-align: left;
+  color: #fff;
+}
 
+select {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: 0.3s;
+}
+
+select:focus {
+  background-color: #fff;
+  transform: scale(1.02);
+}
+
+/* 🔘 Button */
+button {
+  margin-top: 20px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #27ae60, #f39c12);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.4s;
+  font-weight: 600;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 25px;
+  }
+
+  .app-title {
+    font-size: 1.8rem;
+  }
+}
