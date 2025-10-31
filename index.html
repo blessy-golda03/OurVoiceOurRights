@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Voice, Our Rights | நம்ம குரல், நம்ம உரிமை</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OurVoiceOurRights - MGNREGA Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h1>Our Voice, Our Rights</h1>
-    <h2>நம்ம குரல், நம்ம உரிமை</h2>
-    <p>View your district’s MGNREGA performance easily — உங்கள் மாவட்டத்தின் செயல்திறனை எளிதாகப் பாருங்கள்</p>
+    <h1 id="title">Our Voice, Our Rights</h1>
+    <button id="langToggle">தமிழ்</button>
   </header>
 
-  <main>
-    <label for="district"><b>Select your District / உங்கள் மாவட்டத்தைத் தேர்வுசெய்க:</b></label><br>
-    <select id="district" onchange="showData()">
-      <option value="">-- Choose District --</option>
-      <option>Chennai</option>
-      <option>Coimbatore</option>
-      <option>Madurai</option>
-      <option>Salem</option>
-      <option>Trichy</option>
+  <section class="content">
+    <label id="districtLabel" for="district">Select District:</label>
+    <select id="district">
+      <option value="Salem">Salem</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Madurai">Madurai</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Tiruchirappalli">Tiruchirappalli</option>
+      <option value="Thanjavur">Thanjavur</option>
     </select>
+    <button id="detectBtn">📍 Auto Detect District</button>
 
-    <div id="output" style="margin-top: 20px;">
-      <p>Please select a district 👆</p>
+    <div class="chart-container">
+      <h2 id="chart1Title">Workers Engaged (2022–2024)</h2>
+      <canvas id="workersChart"></canvas>
     </div>
-  </main>
+
+    <div class="chart-container">
+      <h2 id="chart2Title">Wages Disbursed (₹ in Crores)</h2>
+      <canvas id="wagesChart"></canvas>
+    </div>
+  </section>
 
   <footer>
-    <p>Developed by <b>Blessy Selvasingh</b> for <b>Build for Bharat Fellowship 2026</b> 🌾</p>
+    <p id="footerText">Empowering Citizens through Data Transparency 🇮🇳</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
 </html>
+
