@@ -1,4 +1,3 @@
-
 // Dummy MGNREGA data for Tamil Nadu districts
 const data = {
   "Chennai": { workers: "1.2 Lakh", households: "25,000", wages: "₹5.2 Cr" },
@@ -13,7 +12,7 @@ function showData() {
   const output = document.getElementById("output");
 
   if (!district || !data[district]) {
-    output.innerHTML = "<p>Please select a district 👆</p>";
+    output.innerHTML = "<p>⚠️ Please select a district 👆</p>";
     return;
   }
 
@@ -28,19 +27,18 @@ function showData() {
   `;
 }
 
-// 📍 Auto-detect user location
+// 🌍 Auto-detect location (runs at start)
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
-  document.getElementById("output").innerHTML = `<p>⚠️ Geolocation not supported.</p>`;
+  manualSelectMessage();
 }
 
 function success(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
-  let nearest = "Chennai"; // default
+  let nearest = "Chennai";
 
-  // Rough latitude/longitude match for Tamil Nadu districts
   const districts = {
     "Chennai": [13.08, 80.27],
     "Salem": [11.65, 78.16],
@@ -69,9 +67,25 @@ function success(position) {
 }
 
 function error() {
-  document.getElementById("output").innerHTML = `
-    <p>⚠️ Unable to detect your location. Please select your district manually.</p>
+  manualSelectMessage();
+}
+
+function manualSelectMessage() {
+  const output = document.getElementById("output");
+  output.innerHTML = `
+    <p>⚠️ Unable to detect your location. Please select your district manually or try again below.</p>
+    <button onclick="detectAgain()" style="padding:8px 15px;border:none;background:#007b7f;color:#fff;border-radius:8px;cursor:pointer;margin-top:10px;">📍 Detect My District</button>
   `;
 }
+
+// 🔁 Button function to re-detect manually
+function detectAgain() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } else {
+    alert("Geolocation not supported in your browser.");
+  }
+}
+
 
 
