@@ -58,5 +58,22 @@ footer {
   h1 { font-size: 22px; }
   select { width: 100%; }
 }
+/* 🔘 Detect My District Button Style */
+button {
+  background-color: #009879;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #007a62;
+  transform: scale(1.05);
+}
 
 
