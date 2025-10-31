@@ -3,44 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OurVoiceOurRights - MGNREGA Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Our Voice, Our Rights</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h1 id="title">Our Voice, Our Rights</h1>
-    <button id="langToggle">தமிழ்</button>
-  </header>
+  <h1>Our Voice, Our Rights</h1>
 
-  <section class="content">
-    <label id="districtLabel" for="district">Select District:</label>
-    <select id="district">
-      <option value="Salem">Salem</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Madurai">Madurai</option>
-      <option value="Coimbatore">Coimbatore</option>
-      <option value="Tiruchirappalli">Tiruchirappalli</option>
-      <option value="Thanjavur">Thanjavur</option>
-    </select>
-    <button id="detectBtn">📍 Auto Detect District</button>
+  <label for="language"><b>Select Language / மொழியைத் தேர்ந்தெடுக்கவும்:</b></label>
+  <select id="language" onchange="changeLanguage()">
+    <option value="en">English</option>
+    <option value="ta">தமிழ்</option>
+  </select>
 
-    <div class="chart-container">
-      <h2 id="chart1Title">Workers Engaged (2022–2024)</h2>
-      <canvas id="workersChart"></canvas>
-    </div>
+  <button id="locationBtn" onclick="detectLocation()">📍 Detect My Location</button>
+  <p id="locationResult"></p>
 
-    <div class="chart-container">
-      <h2 id="chart2Title">Wages Disbursed (₹ in Crores)</h2>
-      <canvas id="wagesChart"></canvas>
-    </div>
-  </section>
-
-  <footer>
-    <p id="footerText">Empowering Citizens through Data Transparency 🇮🇳</p>
-  </footer>
+  <div id="currentYearData"></div>
+  <canvas id="performanceChart" width="600" height="400"></canvas>
 
   <script src="script.js"></script>
 </body>
 </html>
-
