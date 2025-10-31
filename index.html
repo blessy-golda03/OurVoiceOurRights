@@ -1,26 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Our Voice, Our Rights</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>Our Voice, Our Rights</h1>
+  <header class="topbar">
+    <div class="title-block">
+      <h1 id="appTitle">Our Voice, Our Rights</h1>
+      <p id="subtitle">MGNREGA district performance — Tamil Nadu</p>
+    </div>
 
-  <label for="language"><b>Select Language / மொழியைத் தேர்ந்தெடுக்கவும்:</b></label>
-  <select id="language" onchange="changeLanguage()">
-    <option value="en">English</option>
-    <option value="ta">தமிழ்</option>
-  </select>
+    <div class="controls">
+      <select id="language" aria-label="Select language">
+        <option value="en">English</option>
+        <option value="ta">தமிழ்</option>
+      </select>
 
-  <button id="locationBtn" onclick="detectLocation()">📍 Detect My Location</button>
-  <p id="locationResult"></p>
+      <select id="districtSelect" aria-label="Select district">
+        <option value="Salem">Salem</option>
+        <option value="Coimbatore">Coimbatore</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Tirunelveli">Tirunelveli</option>
+        <option value="Trichy">Tiruchirappalli</option>
+      </select>
 
-  <div id="currentYearData"></div>
-  <canvas id="performanceChart" width="600" height="400"></canvas>
+      <button id="detectBtn">📍 Detect My Location</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- CURRENT YEAR SUMMARY -->
+    <section id="currentView">
+      <div id="currentYearData" class="card-grid"></div>
+
+      <div class="actions">
+        <button id="viewPastBtn" class="primary">📊 View Past Performance</button>
+      </div>
+    </section>
+
+    <!-- PAST PERFORMANCE (hidden initially) -->
+    <section id="pastView" class="hidden">
+      <div class="chart-header">
+        <h2 id="pastTitle">Past Performance (2020–2025)</h2>
+        <button id="backBtn" class="secondary">⬅ Back to Current Year</button>
+      </div>
+
+      <div class="chart-area">
+        <canvas id="trendChart" aria-label="Trend Chart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p id="footerText">Data shown is sample/representative. Real data can be fetched from data.gov.in MGNREGA API.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
