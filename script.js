@@ -1,10 +1,11 @@
+
 // Dummy MGNREGA data for Tamil Nadu districts
 const data = {
   "Chennai": { workers: "1.2 Lakh", households: "25,000", wages: "₹5.2 Cr" },
   "Salem": { workers: "95,000", households: "18,500", wages: "₹4.8 Cr" },
   "Madurai": { workers: "88,000", households: "17,200", wages: "₹4.3 Cr" },
   "Coimbatore": { workers: "1.1 Lakh", households: "20,000", wages: "₹5.0 Cr" },
-  "Trichy": { workers: "92,000", households: "19,000", wages: "₹4.6 Cr" },
+  "Trichy": { workers: "92,000", households: "19,000", wages: "₹4.6 Cr" }
 };
 
 function showData() {
@@ -20,28 +21,51 @@ function showData() {
   output.innerHTML = `
     <div class="card">
       <h3>${district} District</h3>
-      <p><b>👷 Workers Engaged:</b> ${info.workers}</p>
-      <p><b>🏠 Households Completed:</b> ${info.households}</p>
-      <p><b>💰 Total Wages Paid:</b> ${info.wages}</p>
+      <p>👷‍♀️ <b>Workers Engaged:</b> ${info.workers}</p>
+      <p>🏠 <b>Households Completed:</b> ${info.households}</p>
+      <p>💰 <b>Total Wages Paid:</b> ${info.wages}</p>
     </div>
   `;
 }
-// Try to detect user's location automatically
+
+// 📍 Auto-detect user location
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
-  console.log("Geolocation is not supported by this browser.");
+  document.getElementById("output").innerHTML = `<p>⚠️ Geolocation not supported.</p>`;
 }
 
 function success(position) {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+  let nearest = "Chennai"; // default
 
-  document.getElementById("output").innerHTML = `
-    <p>📍 Your location detected!<br>
-    Latitude: ${latitude.toFixed(2)}, Longitude: ${longitude.toFixed(2)}</p>
-    <p>Select your district to view MGNREGA data 👇</p>
-  `;
+  // Rough latitude/longitude match for Tamil Nadu districts
+  const districts = {
+    "Chennai": [13.08, 80.27],
+    "Salem": [11.65, 78.16],
+    "Madurai": [9.93, 78.12],
+    "Coimbatore": [11.01, 76.96],
+    "Trichy": [10.79, 78.70]
+  };
+
+  let minDist = Infinity;
+  for (const d in districts) {
+    const [dLat, dLon] = districts[d];
+    const dist = Math.sqrt((lat - dLat) ** 2 + (lon - dLon) ** 2);
+    if (dist < minDist) {
+      minDist = dist;
+      nearest = d;
+    }
+  }
+
+  document.getElementById("district").value = nearest;
+  showData();
+
+  document.getElementById("output").insertAdjacentHTML(
+    "afterbegin",
+    `<p>📍 Auto-detected nearest district: <b>${nearest}</b></p>`
+  );
 }
 
 function error() {
@@ -49,4 +73,5 @@ function error() {
     <p>⚠️ Unable to detect your location. Please select your district manually.</p>
   `;
 }
+
 
