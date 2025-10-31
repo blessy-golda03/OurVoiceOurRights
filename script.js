@@ -26,3 +26,27 @@ function showData() {
     </div>
   `;
 }
+// Try to detect user's location automatically
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(success, error);
+} else {
+  console.log("Geolocation is not supported by this browser.");
+}
+
+function success(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  document.getElementById("output").innerHTML = `
+    <p>📍 Your location detected!<br>
+    Latitude: ${latitude.toFixed(2)}, Longitude: ${longitude.toFixed(2)}</p>
+    <p>Select your district to view MGNREGA data 👇</p>
+  `;
+}
+
+function error() {
+  document.getElementById("output").innerHTML = `
+    <p>⚠️ Unable to detect your location. Please select your district manually.</p>
+  `;
+}
+
