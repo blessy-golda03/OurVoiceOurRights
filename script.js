@@ -1,54 +1,28 @@
-const districts = ["Chennai", "Salem", "Coimbatore", "Madurai", "Erode", "Tirunelveli", "Thanjavur"];
-const select = document.getElementById("district");
-const dataDisplay = document.getElementById("dataDisplay");
-const chartCanvas = document.getElementById("chart");
-let chart;
+// Dummy MGNREGA data for Tamil Nadu districts
+const data = {
+  "Chennai": { workers: "1.2 Lakh", households: "25,000", wages: "₹5.2 Cr" },
+  "Salem": { workers: "95,000", households: "18,500", wages: "₹4.8 Cr" },
+  "Madurai": { workers: "88,000", households: "17,200", wages: "₹4.3 Cr" },
+  "Coimbatore": { workers: "1.1 Lakh", households: "20,000", wages: "₹5.0 Cr" },
+  "Trichy": { workers: "92,000", households: "19,000", wages: "₹4.6 Cr" },
+};
 
-districts.forEach(d => {
-  const opt = document.createElement("option");
-  opt.value = d;
-  opt.textContent = d;
-  select.appendChild(opt);
-});
+function showData() {
+  const district = document.getElementById("district").value;
+  const output = document.getElementById("output");
 
-async function loadData(district) {
-  try {
-    const response = await fetch("data.json");
-    const data = await response.json();
-    const districtData = data[district];
-    if (!districtData) throw new Error("No data found");
-    document.getElementById("districtName").textContent = `${district}`;
-    document.getElementById("workers").textContent = districtData.workers;
-    document.getElementById("households").textContent = districtData.households;
-    document.getElementById("works").textContent = districtData.works;
-    document.getElementById("wages").textContent = districtData.wages;
-    dataDisplay.classList.remove("hidden");
-    createChart(districtData);
-  } catch {
-    alert("Data not available. Please try again later.");
+  if (!district || !data[district]) {
+    output.innerHTML = "<p>Please select a district 👆</p>";
+    return;
   }
+
+  const info = data[district];
+  output.innerHTML = `
+    <div class="card">
+      <h3>${district} District</h3>
+      <p><b>👷 Workers Engaged:</b> ${info.workers}</p>
+      <p><b>🏠 Households Completed:</b> ${info.households}</p>
+      <p><b>💰 Total Wages Paid:</b> ${info.wages}</p>
+    </div>
+  `;
 }
-
-function createChart(d) {
-  if (chart) chart.destroy();
-  chart = new Chart(chartCanvas, {
-    type: "bar",
-    data: {
-      labels: ["Workers", "Households", "Works", "Wages (₹ in Lakh)"],
-      datasets: [{
-        label: "District Performance",
-        data: [d.workers, d.households, d.works, d.wages / 100000],
-        backgroundColor: ["#00796b", "#43a047", "#fbc02d", "#ef5350"]
-      }]
-    }
-  });
-}
-
-select.addEventListener("change", e => loadData(e.target.value));
-
-document.getElementById("detectLocation").addEventListener("click", () => {
-  navigator.geolocation.getCurrentPosition(pos => {
-    alert("Auto-detect feature (Mock): Using your location to find nearest district!");
-    loadData("Salem"); // Mock detection for demo
-  });
-});
