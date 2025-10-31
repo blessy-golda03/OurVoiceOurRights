@@ -1,64 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Our Voice, Our Rights</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>வேலை வாய்ப்பு அறிக்கை | Employment Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header class="topbar">
-    <div class="title-block">
-      <h1 id="appTitle">Our Voice, Our Rights</h1>
-      <p id="subtitle">MGNREGA district performance — Tamil Nadu</p>
-    </div>
+<body class="welcome-page">
 
-    <div class="controls">
-      <select id="language" aria-label="Select language">
+  <div class="container fade-in">
+    <h1 class="app-title">வேலை வாய்ப்பு அறிக்கை</h1>
+    <h2 class="sub-title">Employment Data Visualizer – Tamil Nadu 2025</h2>
+
+    <div class="form-box">
+      <label for="lang">Select Language / மொழியைத் தேர்ந்தெடுக்கவும்</label>
+      <select id="lang">
         <option value="en">English</option>
         <option value="ta">தமிழ்</option>
       </select>
 
-      <select id="districtSelect" aria-label="Select district">
-        <option value="Salem">Salem</option>
+      <label for="district">Select District / மாவட்டத்தைத் தேர்ந்தெடுக்கவும்</label>
+      <select id="district">
+        <option value="">-- Choose District --</option>
+        <option value="Chennai">Chennai</option>
         <option value="Coimbatore">Coimbatore</option>
         <option value="Madurai">Madurai</option>
         <option value="Tirunelveli">Tirunelveli</option>
-        <option value="Trichy">Tiruchirappalli</option>
+        <option value="Salem">Salem</option>
+        <option value="Trichy">Trichy</option>
+        <option value="Vellore">Vellore</option>
+        <option value="Thoothukudi">Thoothukudi</option>
+        <option value="Erode">Erode</option>
+        <option value="Tanjavur">Tanjavur</option>
+        <option value="Others">Other District</option>
       </select>
 
-      <button id="detectBtn">📍 Detect My Location</button>
+      <button id="enter-btn">Enter →</button>
     </div>
-  </header>
+  </div>
 
-  <main class="container">
-    <!-- CURRENT YEAR SUMMARY -->
-    <section id="currentView">
-      <div id="currentYearData" class="card-grid"></div>
+  <script>
+    document.getElementById("enter-btn").addEventListener("click", () => {
+      const lang = document.getElementById("lang").value;
+      const district = document.getElementById("district").value;
+      if (district === "") {
+        alert("Please select a district!");
+        return;
+      }
+      localStorage.setItem("selectedLang", lang);
+      localStorage.setItem("selectedDistrict", district);
+      window.location.href = "dashboard.html";
+    });
+  </script>
 
-      <div class="actions">
-        <button id="viewPastBtn" class="primary">📊 View Past Performance</button>
-      </div>
-    </section>
-
-    <!-- PAST PERFORMANCE (hidden initially) -->
-    <section id="pastView" class="hidden">
-      <div class="chart-header">
-        <h2 id="pastTitle">Past Performance (2020–2025)</h2>
-        <button id="backBtn" class="secondary">⬅ Back to Current Year</button>
-      </div>
-
-      <div class="chart-area">
-        <canvas id="trendChart" aria-label="Trend Chart"></canvas>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p id="footerText">Data shown is sample/representative. Real data can be fetched from data.gov.in MGNREGA API.</p>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
+
