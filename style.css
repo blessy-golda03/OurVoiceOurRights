@@ -1,50 +1,62 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  background: #f8f9fa;
-  color: #333;
+  font-family: "Poppins", sans-serif;
+  background-color: #f8fafc;
+  color: #222;
   text-align: center;
-  padding: 10px;
+  padding: 20px;
 }
 
 header {
-  background: #00695c;
+  background-color: #0a9396;
   color: white;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
-select, button {
+h1 {
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+h2 {
+  font-size: 18px;
+  color: #333;
+}
+
+select {
   padding: 10px;
-  margin: 10px;
+  font-size: 16px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  margin-top: 10px;
+  outline: none;
 }
 
-button {
-  background: #26a69a;
-  color: white;
-  cursor: pointer;
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 15px auto;
+  width: 85%;
+  max-width: 400px;
+  text-align: left;
 }
 
-button:hover {
-  background: #00796b;
-}
-
-.info {
-  background: #e0f2f1;
-  border-radius: 10px;
-  margin: 20px;
-  padding: 15px;
-  font-size: 18px;
+.card h3 {
+  color: #0a9396;
 }
 
 footer {
   margin-top: 30px;
-  color: gray;
   font-size: 14px;
+  color: #555;
 }
 
-.hidden {
-  display: none;
+@media (max-width: 600px) {
+  h1 { font-size: 22px; }
+  select { width: 100%; }
 }
+
+
