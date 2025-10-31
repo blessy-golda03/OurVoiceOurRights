@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Voice, Our Rights</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f6f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1a73e8;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .language-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .language-toggle button {
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #e8f0fe;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .language-toggle button.active {
+      background: #1a73e8;
+      color: white;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #1a73e8;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+    footer {
+      text-align: center;
+      font-size: 14px;
+      padding: 10px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>Our Voice, Our Rights</header>
+  
+  <div class="container">
+    <div class="language-toggle">
+      <button id="englishBtn" class="active">English</button>
+      <button id="tamilBtn">தமிழ்</button>
+    </div>
+
+    <select id="districtSelect">
+      <option value="">Select District</option>
+      <option value="Chennai">Chennai / சென்னை</option>
+      <option value="Coimbatore">Coimbatore / கோயம்புத்தூர்</option>
+      <option value="Madurai">Madurai / மதுரை</option>
+      <option value="Salem">Salem / சேலம்</option>
+      <option value="Tirunelveli">Tirunelveli / திருநெல்வேலி</option>
+      <option value="Tiruchirappalli">Tiruchirappalli / திருச்சிராப்பள்ளி</option>
+      <option value="Vellore">Vellore / வேலூர்</option>
+      <option value="Thoothukudi">Thoothukudi / தூத்துக்குடி</option>
+    </select>
+
+    <button onclick="detectLocation()">📍 Detect My Location</button>
+
+    <div id="dataSection">
+      <div class="card">
+        <h3 id="workersTitle">👷 Workers Employed</h3>
+        <p id="workersCount">--</p>
+      </div>
+      <div class="card">
+        <h3 id="projectsTitle">🏗️ Ongoing Projects</h3>
+        <p id="projectsCount">--</p>
+      </div>
+      <div class="card">
+        <h3 id="wagesTitle">💰 Wages Paid</h3>
+        <p id="wagesCount">--</p>
+      </div>
+    </div>
+
+    <button onclick="compareData()">📊 Compare Past Data</button>
+  </div>
+
+  <footer>© 2025 Our Voice, Our Rights | Data: MGNREGA Open API</footer>
+
+  <script>
+    const data = {
+      Chennai: { workers: 12000, projects: 250, wages: "₹4.8 Cr" },
+      Coimbatore: { workers: 18000, projects: 310, wages: "₹6.2 Cr" },
+      Madurai: { workers: 15000, projects: 270, wages: "₹5.1 Cr" },
+      Salem: { workers: 14000, projects: 290, wages: "₹4.9 Cr" },
+      Tirunelveli: { workers: 13000, projects: 260, wages: "₹4.4 Cr" },
+      Tiruchirappalli: { workers: 16000, projects: 300, wages: "₹5.5 Cr" },
+      Vellore: { workers: 12500, projects: 240, wages: "₹4.3 Cr" },
+      Thoothukudi: { workers: 11000, projects: 220, wages: "₹3.9 Cr" }
+    };
+
+    const tamilText = {
+      selectDistrict: "மாவட்டத்தைத் தேர்ந்தெடுக்கவும்",
+      workers: "👷 வேலை செய்பவர்கள்",
+      projects: "🏗️ நடந்து கொண்டிருக்கும் திட்டங்கள்",
+      wages: "💰 வழங்கப்பட்ட கூலி"
+    };
+
+    document.getElementById("districtSelect").addEventListener("change", showData);
+    document.getElementById("englishBtn").addEventListener("click", () => setLanguage("en"));
+    document.getElementById("tamilBtn").addEventListener("click", () => setLanguage("ta"));
+
+    function showData() {
+      const district = document.getElementById("districtSelect").value;
+      if (!district) return;
+
+      const d = data[district];
+      document.getElementById("workersCount").textContent = d.workers;
+      document.getElementById("projectsCount").textContent = d.projects;
+      document.getElementById("wagesCount").textContent = d.wages;
+    }
+
+    function setLanguage(lang) {
+      if (lang === "ta") {
+        document.getElementById("englishBtn").classList.remove("active");
+        document.getElementById("tamilBtn").classList.add("active");
+        document.getElementById("workersTitle").textContent = tamilText.workers;
+        document.getElementById("projectsTitle").textContent = tamilText.projects;
+        document.getElementById("wagesTitle").textContent = tamilText.wages;
+      } else {
+        document.getElementById("tamilBtn").classList.remove("active");
+        document.getElementById("englishBtn").classList.add("active");
+        document.getElementById("workersTitle").textContent = "👷 Workers Employed";
+        document.getElementById("projectsTitle").textContent = "🏗️ Ongoing Projects";
+        document.getElementById("wagesTitle").textContent = "💰 Wages Paid";
+      }
+    }
+
+    function compareData() {
+      alert("Feature: Compare past month data (for demo purpose). You can expand using stored API data.");
+    }
+
+    function detectLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          alert("Location detected! (In production, it will auto-map your district.)");
+        });
+      } else {
+        alert("Geolocation not supported in your browser.");
+      }
+    }
+  </script>
+</body>
+</html>
