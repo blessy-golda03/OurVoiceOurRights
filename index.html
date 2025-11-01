@@ -23,6 +23,7 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   padding: 30px;
   text-align: center;
+  position: relative;
 }
 h1 { color: #0077b6; }
 select, button {
@@ -51,12 +52,20 @@ footer {
   font-size: 14px;
   color: #555;
 }
-.chart-container { width: 100%; height: 300px; }
+.chart-container { width: 100%; height: 320px; }
 .lang-toggle {
   position: absolute; top: 10px; right: 15px;
   background: #fff; border: 1px solid #ccc;
   padding: 5px 10px; border-radius: 5px; cursor: pointer;
 }
+.back-btn {
+  position: absolute;
+  top: 10px; left: 15px;
+  background: #0077b6; color: white;
+  border: none; border-radius: 5px;
+  padding: 5px 10px; cursor: pointer;
+}
+.back-btn:hover { background: #005f86; }
 </style>
 </head>
 
@@ -84,6 +93,7 @@ footer {
 
 <!-- Page 2 -->
 <div class="container hidden" id="page2">
+  <button class="back-btn" onclick="goBack()">←</button>
   <h1 id="districtTitle">District Details</h1>
   <div id="currentData">
     <h2 id="currentYear">2025 Performance</h2>
@@ -149,15 +159,14 @@ function updateLanguage(){
     }
   }[currentLang];
   for (let id in t) document.getElementById(id).textContent = t[id];
+  document.getElementById('languageSelect').value = currentLang;
 }
 
-// location detection (bonus)
+// location detection
 function detectLocation(){
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(
-      (pos)=>{
-        alert("📍 Detected your location successfully!");
-      },
+      ()=>alert("📍 Detected your location successfully!"),
       ()=>alert("Unable to detect location.")
     );
   } else alert("Geolocation not supported.");
@@ -172,6 +181,12 @@ function goToDashboard(){
   updateLanguage();
 }
 
+// go back to selection page
+function goBack(){
+  document.getElementById("page2").classList.add("hidden");
+  document.getElementById("page1").classList.remove("hidden");
+}
+
 // chart for past performance
 let chartShown = false;
 function showPastPerformance(){
@@ -183,24 +198,39 @@ function showPastPerformance(){
     type: "bar",
     data: {
       labels: ["2020","2021","2022","2023","2024","2025"],
-     datasets: [
-  {
-    label: "Jobs Provided",
-    data: [95000,105000,110000,115000,120000,124000],
-    backgroundColor: "rgba(0,119,182,0.85)",
-    borderColor: "#004c6d",
-    borderWidth: 1.5
-  },
-  {
-    label: "Total Expenditure (₹ Cr)",
-    data: [40,45,48,52,54,56.3],
-    backgroundColor: "rgba(255, 205, 0, 0.9)",   // Bright golden yellow
-    borderColor: "#cc9a00",                       // Deep yellow border
-    borderWidth: 1.5
-  }
-]
+      datasets: [
+        {
+          label: "Jobs Provided",
+          data: [95000,105000,110000,115000,120000,124000],
+          backgroundColor: "#0077B6",
+          borderColor: "#004c6d",
+          borderWidth: 1.5
+        },
+        {
+          label: "Total Expenditure (₹ Cr)",
+          data: [40,45,48,52,54,56.3],
+          backgroundColor: "#FFD700",
+          borderColor: "#b8860b",
+          borderWidth: 1.5
+        }
+      ]
     },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    options: {
+      responsive: true,
+      scales: {
+        x: { stacked: false },
+        y: { beginAtZero: true }
+      },
+      plugins: {
+        legend: { position: "top" },
+        title: {
+          display: true,
+          text: "MGNREGA Scheme Performance (2020–2025)",
+          font: { size: 16, weight: "bold" },
+          color: "#333"
+        }
+      }
+    }
   });
 }
 updateLanguage();
