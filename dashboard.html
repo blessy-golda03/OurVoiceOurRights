@@ -1,116 +1,41 @@
 <!DOCTYPE html>
-<html lang="ta">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MGNREGA Performance Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>District Dashboard - Our Voice, Our Rights</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <div class="container fade-in">
-    <h1 class="app-title" id="districtTitle">MGNREGA 2025 - District Data</h1>
-    <p class="sub-title" id="languageNote">(தேர்ந்தெடுக்கப்பட்ட மாவட்டத்தின் தரவு / Selected District Data)</p>
+<body class="gradient-bg">
 
-    <!-- 🧾 Current Year Data -->
-    <div id="currentData" class="fade-in">
-      <h2>📅 2025 MGNREGA Highlights</h2>
-      <ul id="dataList"></ul>
-      <button id="viewPastBtn">🔍 View Past Performance</button>
+  <div class="header">
+    <h1 id="districtTitle">District Performance</h1>
+    <p id="dateTime"></p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>👷 Workers Engaged (2025)</h3>
+      <p id="workersCount">Loading...</p>
     </div>
-
-    <!-- 📈 Trend Chart -->
-    <div id="chartSection" style="display:none; margin-top:40px;">
-      <h2>📊 MGNREGA Performance Trend (2020–2025)</h2>
-      <canvas id="trendChart" width="400" height="200"></canvas>
+    <div class="card">
+      <h3>💰 Total Expenditure (2025)</h3>
+      <p id="expenditure">Loading...</p>
     </div>
   </div>
 
-  <script>
-    // 🧭 Fetch stored selections
-    const district = localStorage.getItem('selectedDistrict');
-    const language = localStorage.getItem('selectedLanguage');
-    const title = document.getElementById('districtTitle');
-    const dataList = document.getElementById('dataList');
-    const viewPastBtn = document.getElementById('viewPastBtn');
-    const chartSection = document.getElementById('chartSection');
+  <button id="viewPastBtn">📊 View Past Performance</button>
 
-    // 🗺️ District names Tamil/English
-    const districtNames = {
-      "Salem": "சேலம்",
-      "Chennai": "சென்னை",
-      "Madurai": "மதுரை",
-      "Coimbatore": "கோயம்புத்தூர்",
-      "Tirunelveli": "திருநெல்வேலி"
-    };
+  <div id="pastPerformance" class="hidden">
+    <h2>📈 Past Performance (2020–2025)</h2>
+    <canvas id="trendChart"></canvas>
+  </div>
 
-    // 📊 2025 Sample Data (you can replace with real data)
-    const data2025 = {
-      "Salem": { workers: 54210, expenditure: "₹12.3 Cr", projects: 138 },
-      "Chennai": { workers: 39800, expenditure: "₹9.5 Cr", projects: 102 },
-      "Madurai": { workers: 48220, expenditure: "₹10.7 Cr", projects: 126 },
-      "Coimbatore": { workers: 51500, expenditure: "₹11.8 Cr", projects: 133 },
-      "Tirunelveli": { workers: 46500, expenditure: "₹10.1 Cr", projects: 119 }
-    };
+  <footer>
+    <p>Designed & Developed by <b>Blessy Golda</b><br>for Build for Bharat Fellowship 2026</p>
+  </footer>
 
-    // 🪶 Set Title in selected language
-    title.textContent =
-      language === "Tamil"
-        ? `${districtNames[district]} மாவட்டம் - 2025`
-        : `${district} District - 2025`;
-
-    // 🗂️ Show current year data
-    const data = data2025[district];
-    dataList.innerHTML = `
-      <li>👷 Workers Engaged: <b>${data.workers}</b></li>
-      <li>💰 Total Expenditure: <b>${data.expenditure}</b></li>
-      <li>🏗️ Projects Completed: <b>${data.projects}</b></li>
-    `;
-
-    // 📈 Past Performance Trend (2020–2025)
-    const trendData = {
-      "Salem": [41000, 44000, 46500, 49000, 52000, 54210],
-      "Chennai": [34000, 36000, 38200, 39500, 40200, 39800],
-      "Madurai": [38000, 40500, 42500, 44800, 47200, 48220],
-      "Coimbatore": [42000, 45000, 47000, 49000, 50500, 51500],
-      "Tirunelveli": [39000, 41500, 43500, 44800, 45500, 46500],
-    };
-
-    // 🎛️ Button to show chart
-    viewPastBtn.addEventListener("click", () => {
-      chartSection.style.display = "block";
-      viewPastBtn.style.display = "none";
-
-      new Chart(document.getElementById("trendChart"), {
-        type: "line",
-        data: {
-          labels: ["2020", "2021", "2022", "2023", "2024", "2025"],
-          datasets: [
-            {
-              label: "Workers Engaged",
-              data: trendData[district],
-              borderColor: "#27ae60",
-              backgroundColor: "rgba(39,174,96,0.3)",
-              fill: true,
-              tension: 0.3
-            }
-          ]
-        },
-        options: {
-          plugins: {
-            legend: { display: true },
-            tooltip: { enabled: true }
-          },
-          scales: {
-            y: { beginAtZero: true }
-          },
-          animation: {
-            duration: 1500,
-            easing: "easeOutBounce"
-          }
-        }
-      });
-    });
-  </script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
