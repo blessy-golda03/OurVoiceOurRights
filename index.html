@@ -1,183 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Voice, Our Rights / உங்கள் குரல், உங்கள் உரிமைகள்</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Our Voice, Our Rights</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom right, #e0f3ff, #ffffff);
+  font-family: "Poppins", sans-serif;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  background: linear-gradient(to bottom, #c9f1ff, #ffffff);
+  color: #222;
 }
 .container {
   max-width: 600px;
-  margin: auto;
-  padding: 20px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  padding: 30px;
+  text-align: center;
 }
-h1 {
-  font-size: 24px;
-  color: #005baa;
-}
-button, select {
+h1 { color: #0077b6; }
+select, button {
+  width: 90%;
   padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  margin: 8px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 button {
-  background-color: #007bff;
+  background-color: #0077b6;
   color: white;
+  font-size: 16px;
   cursor: pointer;
 }
-button:hover { background-color: #0056b3; }
+button:hover { background-color: #005f86; }
+.hidden { display: none; }
 .card {
-  background: white;
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: #e3f6ff;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 10px;
 }
 footer {
   margin-top: 20px;
   font-size: 14px;
   color: #555;
 }
-canvas {
-  max-width: 100%;
-}
-.hidden {
-  display: none;
+.chart-container { width: 100%; height: 300px; }
+.lang-toggle {
+  position: absolute; top: 10px; right: 15px;
+  background: #fff; border: 1px solid #ccc;
+  padding: 5px 10px; border-radius: 5px; cursor: pointer;
 }
 </style>
 </head>
+
 <body>
 
+<!-- Language toggle -->
+<div class="lang-toggle" onclick="toggleLanguage()">தமிழ் / English</div>
+
+<!-- Page 1 -->
 <div class="container" id="page1">
-  <h1>Our Voice, Our Rights<br><small>உங்கள் குரல், உங்கள் உரிமைகள்</small></h1>
-  <p><b>Select Language / உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்</b></p>
-  <select id="language">
-    <option value="english">English</option>
-    <option value="tamil">தமிழ்</option>
+  <h1 id="appName">Our Voice, Our Rights</h1>
+  <p id="welcomeText">Empowering citizens to view MGNREGA performance in their district</p>
+  <label id="languageLabel">Select Language:</label>
+  <select id="languageSelect">
+    <option value="en">English</option>
+    <option value="ta">தமிழ்</option>
   </select>
-  
-  <p><b>Select Your District / உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்</b></p>
-  <select id="district">
-    <option value="Salem">Salem</option>
-    <option value="Chennai">Chennai</option>
-    <option value="Madurai">Madurai</option>
-    <option value="Trichy">Trichy</option>
-    <option value="Coimbatore">Coimbatore</option>
+  <label id="districtLabel">Select Your District:</label>
+  <select id="districtSelect">
+    <option value="">-- Select District --</option>
   </select>
-  <br>
-  <button id="detectLocation">📍 Detect My Location</button><br>
-  <button id="continueBtn">Continue / தொடரவும்</button>
+  <button onclick="detectLocation()" id="detectBtn">Detect My Location</button>
+  <button onclick="goToDashboard()" id="continueBtn">Continue</button>
 </div>
 
+<!-- Page 2 -->
 <div class="container hidden" id="page2">
-  <h1 id="districtTitle"></h1>
-  <div class="card">
-    <h3>2025 Data / 2025 தரவு</h3>
-    <p id="workers"></p>
-    <p id="expenditure"></p>
-    <p id="projects"></p>
+  <h1 id="districtTitle">District Details</h1>
+  <div id="currentData">
+    <h2 id="currentYear">2025 Performance</h2>
+    <div class="card" id="jobsCard">Jobs Provided: 1,24,000</div>
+    <div class="card" id="expCard">Total Expenditure: ₹56.3 Cr</div>
   </div>
-  <button id="viewPast">View Past Performance / கடந்த சாதனையைப் பார்வையிடவும்</button>
-  <div class="hidden" id="chartContainer">
+  <button onclick="showPastPerformance()" id="viewPastBtn">View Past Performance</button>
+  <div class="chart-container hidden" id="chartContainer">
     <canvas id="trendChart"></canvas>
   </div>
-  <button id="backBtn">⬅️ Back / பின்செல்</button>
-  <footer>Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
+  <footer id="footer">Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const districts = {
-  Salem: { workers: 12000, expenditure: 8.5, projects: 230 },
-  Chennai: { workers: 9500, expenditure: 7.2, projects: 190 },
-  Madurai: { workers: 11000, expenditure: 8.0, projects: 210 },
-  Trichy: { workers: 9800, expenditure: 7.6, projects: 200 },
-  Coimbatore: { workers: 13000, expenditure: 9.0, projects: 240 }
-};
+const districts = [
+"Chennai","Coimbatore","Salem","Erode","Madurai","Trichy","Vellore","Thoothukudi","Tirunelveli","Thanjavur",
+"Namakkal","Dindigul","Karur","Krishnagiri","Dharmapuri","Nilgiris","Tiruppur","Villupuram","Cuddalore","Kanchipuram",
+"Tiruvannamalai","Ariyalur","Perambalur","Nagapattinam","Pudukkottai","Ramanathapuram","Sivagangai","Theni","Virudhunagar",
+"Tenkasi","Mayiladuthurai","Kallakurichi","Ranipet","Tirupathur","Chengalpattu","Tiruvarur","Thiruvallur","Tiruchendur","Avadi"
+];
 
-let currentDistrict = 'Salem';
-let currentLang = 'english';
-
-document.getElementById('language').addEventListener('change', e => currentLang = e.target.value);
-document.getElementById('district').addEventListener('change', e => currentDistrict = e.target.value);
-
-document.getElementById('continueBtn').addEventListener('click', () => {
-  document.getElementById('page1').classList.add('hidden');
-  document.getElementById('page2').classList.remove('hidden');
-  loadDistrictData();
+const districtSelect = document.getElementById('districtSelect');
+districts.forEach(d => {
+  const opt = document.createElement('option');
+  opt.value = d;
+  opt.textContent = d;
+  districtSelect.appendChild(opt);
 });
 
-document.getElementById('backBtn').addEventListener('click', () => {
-  document.getElementById('page2').classList.add('hidden');
-  document.getElementById('page1').classList.remove('hidden');
-});
-
-document.getElementById('detectLocation').addEventListener('click', () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords;
-      alert("Detected location (approx): Lat " + latitude.toFixed(2) + ", Lon " + longitude.toFixed(2));
-    });
-  } else alert("Geolocation not supported.");
-});
-
-function loadDistrictData() {
-  const data = districts[currentDistrict];
-  const title = currentLang === 'english'
-    ? `${currentDistrict} District - 2025`
-    : `${currentDistrict} மாவட்டம் - 2025`;
-  document.getElementById('districtTitle').innerText = title;
-  document.getElementById('workers').innerText =
-    currentLang === 'english'
-      ? `Workers Engaged: ${data.workers}`
-      : `பணி மேற்கொண்ட தொழிலாளர்கள்: ${data.workers}`;
-  document.getElementById('expenditure').innerText =
-    currentLang === 'english'
-      ? `Total Expenditure: ₹${data.expenditure} Cr`
-      : `மொத்த செலவு: ₹${data.expenditure} கோடி`;
-  document.getElementById('projects').innerText =
-    currentLang === 'english'
-      ? `Projects Completed: ${data.projects}`
-      : `நிறைவு செய்யப்பட்ட திட்டங்கள்: ${data.projects}`;
+// language toggle
+let currentLang = 'en';
+function toggleLanguage(){
+  currentLang = (currentLang === 'en') ? 'ta' : 'en';
+  updateLanguage();
+}
+function updateLanguage(){
+  const t = {
+    en: {
+      appName:"Our Voice, Our Rights",
+      welcomeText:"Empowering citizens to view MGNREGA performance in their district",
+      languageLabel:"Select Language:",
+      districtLabel:"Select Your District:",
+      detectBtn:"Detect My Location",
+      continueBtn:"Continue",
+      currentYear:"2025 Performance",
+      jobsCard:"Jobs Provided: 1,24,000",
+      expCard:"Total Expenditure: ₹56.3 Cr",
+      viewPastBtn:"View Past Performance",
+      footer:"Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026"
+    },
+    ta: {
+      appName:"நமது குரல், நமது உரிமை",
+      welcomeText:"நமது மாவட்டத்தின் MGNREGA செயல்திறனை காண மக்கள் அதிகாரம்",
+      languageLabel:"மொழியைத் தேர்ந்தெடுக்கவும்:",
+      districtLabel:"உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்:",
+      detectBtn:"என் இருப்பிடத்தை கண்டறி",
+      continueBtn:"தொடரவும்",
+      currentYear:"2025 செயல்திறன்",
+      jobsCard:"வழங்கப்பட்ட வேலைகள்: 1,24,000",
+      expCard:"மொத்த செலவு: ₹56.3 கோடி",
+      viewPastBtn:"கடந்த செயல்திறனைப் பார்க்கவும்",
+      footer:"Build for Bharat Fellowship 2026க்காக Blessy Golda வடிவமைத்து உருவாக்கப்பட்டது"
+    }
+  }[currentLang];
+  for (let id in t) document.getElementById(id).textContent = t[id];
 }
 
-document.getElementById('viewPast').addEventListener('click', () => {
-  document.getElementById('chartContainer').classList.toggle('hidden');
-  showChart();
-});
+// location detection (bonus)
+function detectLocation(){
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      (pos)=>{
+        alert("📍 Detected your location successfully!");
+      },
+      ()=>alert("Unable to detect location.")
+    );
+  } else alert("Geolocation not supported.");
+}
 
-function showChart() {
-  const ctx = document.getElementById('trendChart');
+// go to dashboard
+function goToDashboard(){
+  if(!districtSelect.value){ alert("Please select a district!"); return; }
+  document.getElementById("page1").classList.add("hidden");
+  document.getElementById("page2").classList.remove("hidden");
+  document.getElementById("districtTitle").textContent = districtSelect.value + " District";
+  updateLanguage();
+}
+
+// chart for past performance
+let chartShown = false;
+function showPastPerformance(){
+  document.getElementById("chartContainer").classList.remove("hidden");
+  if(chartShown) return;
+  chartShown = true;
+  const ctx = document.getElementById("trendChart");
   new Chart(ctx, {
-    type: 'line',
+    type: "bar",
     data: {
-      labels: ['2020','2021','2022','2023','2024','2025'],
-      datasets: [{
-        label: 'Workers (in 1000s)',
-        data: [8,9,9.5,10,11,12],
-        borderColor: 'blue',
-        fill: false,
-        tension: 0.3
-      },{
-        label: 'Expenditure (Cr)',
-        data: [5,6,6.5,7,8,8.5],
-        borderColor: 'orange',
-        fill: false,
-        tension: 0.3
-      }]
+      labels: ["2020","2021","2022","2023","2024","2025"],
+      datasets: [
+        {
+          label: "Jobs Provided",
+          data: [95000,105000,110000,115000,120000,124000],
+          backgroundColor: "rgba(0,119,182,0.7)"
+        },
+        {
+          label: "Total Expenditure (₹ Cr)",
+          data: [40,45,48,52,54,56.3],
+          backgroundColor: "rgba(255,165,0,0.7)"
+        }
+      ]
     },
-    options: { responsive: true }
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
 }
+updateLanguage();
 </script>
-
 </body>
 </html>
