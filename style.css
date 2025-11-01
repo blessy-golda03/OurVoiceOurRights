@@ -1,108 +1,48 @@
-/* 🌿 Font setup */
 body {
-  margin: 0;
-  font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
-  background: linear-gradient(135deg, #1abc9c, #f39c12);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  overflow: hidden;
-}
-
-/* ✨ Fade animation */
-.fade-in {
-  animation: fadeIn 1.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 📦 Container */
-.container {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 40px 60px;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  padding: 0;
 }
 
-/* 🏷 Titles */
-.app-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #fff;
-  letter-spacing: 1px;
+header {
+  background: #007b5f;
+  color: white;
+  padding: 15px 0;
 }
 
-.sub-title {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 30px;
-  opacity: 0.9;
+main {
+  padding: 20px;
 }
 
-/* 🧾 Form */
-.form-box {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: stretch;
-}
-
-label {
-  font-weight: 600;
-  text-align: left;
-  color: #fff;
-}
-
-select {
-  padding: 10px;
-  border: none;
+section {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
   border-radius: 10px;
-  outline: none;
-  font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
-  transition: 0.3s;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-select:focus {
-  background-color: #fff;
-  transform: scale(1.02);
-}
-
-/* 🔘 Button */
 button {
-  margin-top: 20px;
-  padding: 12px 0;
-  font-size: 1.1rem;
+  background: #007b5f;
+  color: white;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #27ae60, #f39c12);
-  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.4s;
-  font-weight: 600;
 }
 
 button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  background: #005f48;
 }
 
-/* 📱 Responsive */
-@media (max-width: 600px) {
-  .container {
-    padding: 30px 25px;
-  }
-
-  .app-title {
-    font-size: 1.8rem;
-  }
+footer {
+  background: #007b5f;
+  color: white;
+  padding: 10px 0;
+  margin-top: 20px;
 }
