@@ -1,164 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tamil Nadu District Data 2025</title>
-  <style>
-    /* 🌈 Gradient background + base styling */
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(to bottom right, #cce6ff, #ffffff);
-      color: #222;
-      text-align: center;
-      transition: all 0.5s ease;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: #004aad;
-      margin-top: 40px;
-    }
-
-    .container {
-      margin-top: 40px;
-      padding: 20px;
-    }
-
-    select, button {
-      padding: 10px 15px;
-      margin: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    button {
-      background: #007bff;
-      color: white;
-      cursor: pointer;
-      border: none;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    .card {
-      background: white;
-      width: 300px;
-      margin: 15px auto;
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      animation: fadeIn 1.2s ease;
-    }
-
-    .footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #555;
-      font-weight: 500;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Voice, Our Rights / உங்கள் குரல், உங்கள் உரிமைகள்</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom right, #e0f3ff, #ffffff);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+h1 {
+  font-size: 24px;
+  color: #005baa;
+}
+button, select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  margin: 8px;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+button:hover { background-color: #0056b3; }
+.card {
+  background: white;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+canvas {
+  max-width: 100%;
+}
+.hidden {
+  display: none;
+}
+</style>
 </head>
-
 <body>
-  <!-- 🌍 Page 1 -->
-  <div id="page1" class="container">
-    <h1>Select Your District</h1>
-    <select id="districtSelect">
-      <option value="">-- Choose District --</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Coimbatore">Coimbatore</option>
-      <option value="Madurai">Madurai</option>
-      <option value="Salem">Salem</option>
-      <option value="Tiruchirappalli">Tiruchirappalli</option>
-    </select>
-    <br>
-    <button id="continueBtn">Continue</button>
+
+<div class="container" id="page1">
+  <h1>Our Voice, Our Rights<br><small>உங்கள் குரல், உங்கள் உரிமைகள்</small></h1>
+  <p><b>Select Language / உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்</b></p>
+  <select id="language">
+    <option value="english">English</option>
+    <option value="tamil">தமிழ்</option>
+  </select>
+  
+  <p><b>Select Your District / உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்</b></p>
+  <select id="district">
+    <option value="Salem">Salem</option>
+    <option value="Chennai">Chennai</option>
+    <option value="Madurai">Madurai</option>
+    <option value="Trichy">Trichy</option>
+    <option value="Coimbatore">Coimbatore</option>
+  </select>
+  <br>
+  <button id="detectLocation">📍 Detect My Location</button><br>
+  <button id="continueBtn">Continue / தொடரவும்</button>
+</div>
+
+<div class="container hidden" id="page2">
+  <h1 id="districtTitle"></h1>
+  <div class="card">
+    <h3>2025 Data / 2025 தரவு</h3>
+    <p id="workers"></p>
+    <p id="expenditure"></p>
+    <p id="projects"></p>
   </div>
-
-  <!-- 📊 Page 2 -->
-  <div id="page2" class="container" style="display:none;">
-    <h1 id="districtTitle"></h1>
-    <div id="dataCards"></div>
-    <button id="viewPastBtn">View Past Performance</button>
-    <canvas id="districtChart" width="400" height="200" style="margin-top:25px;"></canvas>
-
-    <div class="footer">
-      Designed & Developed by <b>Blessy Golda</b> for <b>Build for Bharat Fellowship 2026</b>
-    </div>
+  <button id="viewPast">View Past Performance / கடந்த சாதனையைப் பார்வையிடவும்</button>
+  <div class="hidden" id="chartContainer">
+    <canvas id="trendChart"></canvas>
   </div>
+  <button id="backBtn">⬅️ Back / பின்செல்</button>
+  <footer>Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
+</div>
 
-  <!-- 📜 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const districtData = {
-      "Chennai": { jobs: 850, expenditure: 120, projects: 25 },
-      "Coimbatore": { jobs: 720, expenditure: 100, projects: 20 },
-      "Madurai": { jobs: 650, expenditure: 90, projects: 18 },
-      "Salem": { jobs: 500, expenditure: 80, projects: 16 },
-      "Tiruchirappalli": { jobs: 540, expenditure: 85, projects: 17 },
-    };
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const districts = {
+  Salem: { workers: 12000, expenditure: 8.5, projects: 230 },
+  Chennai: { workers: 9500, expenditure: 7.2, projects: 190 },
+  Madurai: { workers: 11000, expenditure: 8.0, projects: 210 },
+  Trichy: { workers: 9800, expenditure: 7.6, projects: 200 },
+  Coimbatore: { workers: 13000, expenditure: 9.0, projects: 240 }
+};
 
-    document.getElementById("continueBtn").addEventListener("click", () => {
-      const district = document.getElementById("districtSelect").value;
-      if (district) {
-        document.getElementById("page1").style.display = "none";
-        document.getElementById("page2").style.display = "block";
-        document.getElementById("districtTitle").textContent = `${district} District Data - 2025`;
+let currentDistrict = 'Salem';
+let currentLang = 'english';
 
-        const data = districtData[district];
-        document.getElementById("dataCards").innerHTML = `
-          <div class="card">👷 Jobs Provided: <b>${data.jobs}</b></div>
-          <div class="card">💰 Total Expenditure: <b>₹${data.expenditure} Cr</b></div>
-          <div class="card">🏗️ Ongoing Projects: <b>${data.projects}</b></div>
-        `;
-      } else {
-        alert("Please select a district!");
-      }
+document.getElementById('language').addEventListener('change', e => currentLang = e.target.value);
+document.getElementById('district').addEventListener('change', e => currentDistrict = e.target.value);
+
+document.getElementById('continueBtn').addEventListener('click', () => {
+  document.getElementById('page1').classList.add('hidden');
+  document.getElementById('page2').classList.remove('hidden');
+  loadDistrictData();
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page1').classList.remove('hidden');
+});
+
+document.getElementById('detectLocation').addEventListener('click', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+      alert("Detected location (approx): Lat " + latitude.toFixed(2) + ", Lon " + longitude.toFixed(2));
     });
+  } else alert("Geolocation not supported.");
+});
 
-    document.getElementById("viewPastBtn").addEventListener("click", () => {
-      const district = document.getElementById("districtSelect").value;
-      const ctx = document.getElementById("districtChart").getContext("2d");
+function loadDistrictData() {
+  const data = districts[currentDistrict];
+  const title = currentLang === 'english'
+    ? `${currentDistrict} District - 2025`
+    : `${currentDistrict} மாவட்டம் - 2025`;
+  document.getElementById('districtTitle').innerText = title;
+  document.getElementById('workers').innerText =
+    currentLang === 'english'
+      ? `Workers Engaged: ${data.workers}`
+      : `பணி மேற்கொண்ட தொழிலாளர்கள்: ${data.workers}`;
+  document.getElementById('expenditure').innerText =
+    currentLang === 'english'
+      ? `Total Expenditure: ₹${data.expenditure} Cr`
+      : `மொத்த செலவு: ₹${data.expenditure} கோடி`;
+  document.getElementById('projects').innerText =
+    currentLang === 'english'
+      ? `Projects Completed: ${data.projects}`
+      : `நிறைவு செய்யப்பட்ட திட்டங்கள்: ${data.projects}`;
+}
 
-      const chartData = {
-        labels: ["2021", "2022", "2023", "2024", "2025"],
-        datasets: [
-          {
-            label: "Jobs Provided",
-            data: [400, 500, 600, 750, districtData[district].jobs],
-            backgroundColor: "rgba(0, 123, 255, 0.6)",
-          },
-          {
-            label: "Expenditure (Cr)",
-            data: [60, 75, 85, 100, districtData[district].expenditure],
-            backgroundColor: "rgba(255, 159, 64, 0.6)",
-          }
-        ]
-      };
+document.getElementById('viewPast').addEventListener('click', () => {
+  document.getElementById('chartContainer').classList.toggle('hidden');
+  showChart();
+});
 
-      new Chart(ctx, {
-        type: "bar",
-        data: chartData,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: "top" },
-            title: { display: true, text: `${district} - Past Performance (2021–2025)` }
-          }
-        }
-      });
-    });
-  </script>
+function showChart() {
+  const ctx = document.getElementById('trendChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['2020','2021','2022','2023','2024','2025'],
+      datasets: [{
+        label: 'Workers (in 1000s)',
+        data: [8,9,9.5,10,11,12],
+        borderColor: 'blue',
+        fill: false,
+        tension: 0.3
+      },{
+        label: 'Expenditure (Cr)',
+        data: [5,6,6.5,7,8,8.5],
+        borderColor: 'orange',
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: { responsive: true }
+  });
+}
+</script>
+
 </body>
 </html>
