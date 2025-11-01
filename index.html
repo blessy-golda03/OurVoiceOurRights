@@ -3,45 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Voice, Our Rights</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Tamil Nadu District Data 2025</title>
+  <style>
+    /* 🌈 Gradient background + base styling */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #cce6ff, #ffffff);
+      color: #222;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #004aad;
+      margin-top: 40px;
+    }
+
+    .container {
+      margin-top: 40px;
+      padding: 20px;
+    }
+
+    select, button {
+      padding: 10px 15px;
+      margin: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .card {
+      background: white;
+      width: 300px;
+      margin: 15px auto;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      animation: fadeIn 1.2s ease;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #555;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body class="gradient-bg">
 
-  <div class="container">
-    <h1 class="app-title">Our Voice, Our Rights</h1>
-
-    <div class="language-section">
-      <label for="language">Select Language:</label>
-      <select id="language">
-        <option value="en">English</option>
-        <option value="ta">தமிழ்</option>
-      </select>
-    </div>
-
-    <div class="location-section">
-      <button id="detectLocation">📍 Detect My Location</button>
-      <p id="locationStatus"></p>
-
-      <label for="district">Or Select District:</label>
-      <select id="district">
-        <option value="">-- Select District --</option>
-        <option value="Chennai">Chennai</option>
-        <option value="Salem">Salem</option>
-        <option value="Coimbatore">Coimbatore</option>
-        <option value="Madurai">Madurai</option>
-        <option value="Trichy">Trichy</option>
-        <option value="Tirunelveli">Tirunelveli</option>
-        <option value="Erode">Erode</option>
-        <option value="Thoothukudi">Thoothukudi</option>
-        <option value="Dindigul">Dindigul</option>
-        <option value="Vellore">Vellore</option>
-      </select>
-    </div>
-
-    <button id="continueBtn">Continue ➜</button>
+<body>
+  <!-- 🌍 Page 1 -->
+  <div id="page1" class="container">
+    <h1>Select Your District</h1>
+    <select id="districtSelect">
+      <option value="">-- Choose District --</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Madurai">Madurai</option>
+      <option value="Salem">Salem</option>
+      <option value="Tiruchirappalli">Tiruchirappalli</option>
+    </select>
+    <br>
+    <button id="continueBtn">Continue</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- 📊 Page 2 -->
+  <div id="page2" class="container" style="display:none;">
+    <h1 id="districtTitle"></h1>
+    <div id="dataCards"></div>
+    <button id="viewPastBtn">View Past Performance</button>
+    <canvas id="districtChart" width="400" height="200" style="margin-top:25px;"></canvas>
+
+    <div class="footer">
+      Designed & Developed by <b>Blessy Golda</b> for <b>Build for Bharat Fellowship 2026</b>
+    </div>
+  </div>
+
+  <!-- 📜 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const districtData = {
+      "Chennai": { jobs: 850, expenditure: 120, projects: 25 },
+      "Coimbatore": { jobs: 720, expenditure: 100, projects: 20 },
+      "Madurai": { jobs: 650, expenditure: 90, projects: 18 },
+      "Salem": { jobs: 500, expenditure: 80, projects: 16 },
+      "Tiruchirappalli": { jobs: 540, expenditure: 85, projects: 17 },
+    };
+
+    document.getElementById("continueBtn").addEventListener("click", () => {
+      const district = document.getElementById("districtSelect").value;
+      if (district) {
+        document.getElementById("page1").style.display = "none";
+        document.getElementById("page2").style.display = "block";
+        document.getElementById("districtTitle").textContent = `${district} District Data - 2025`;
+
+        const data = districtData[district];
+        document.getElementById("dataCards").innerHTML = `
+          <div class="card">👷 Jobs Provided: <b>${data.jobs}</b></div>
+          <div class="card">💰 Total Expenditure: <b>₹${data.expenditure} Cr</b></div>
+          <div class="card">🏗️ Ongoing Projects: <b>${data.projects}</b></div>
+        `;
+      } else {
+        alert("Please select a district!");
+      }
+    });
+
+    document.getElementById("viewPastBtn").addEventListener("click", () => {
+      const district = document.getElementById("districtSelect").value;
+      const ctx = document.getElementById("districtChart").getContext("2d");
+
+      const chartData = {
+        labels: ["2021", "2022", "2023", "2024", "2025"],
+        datasets: [
+          {
+            label: "Jobs Provided",
+            data: [400, 500, 600, 750, districtData[district].jobs],
+            backgroundColor: "rgba(0, 123, 255, 0.6)",
+          },
+          {
+            label: "Expenditure (Cr)",
+            data: [60, 75, 85, 100, districtData[district].expenditure],
+            backgroundColor: "rgba(255, 159, 64, 0.6)",
+          }
+        ]
+      };
+
+      new Chart(ctx, {
+        type: "bar",
+        data: chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "top" },
+            title: { display: true, text: `${district} - Past Performance (2021–2025)` }
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
