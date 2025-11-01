@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scheme Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h1 id="title">Government Scheme Overview</h1>
+    <select id="languageSelect" onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+  </div>
+
+  <div class="content">
+    <h2 id="district">Salem District</h2>
+    <h3 id="year">2025 Report</h3>
+    <p id="jobs">Jobs Provided: 1,24,000</p>
+    <p id="expense">Total Expenditure: ₹56.3 Cr</p>
+
+    <canvas id="chart"></canvas>
+  </div>
+
+  <script>
+    // Load saved language
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('language') || 'en';
+      document.getElementById('languageSelect').value = savedLang;
+      changeLanguage(savedLang);
+    });
+
+    // Language change
+    function changeLanguage(lang) {
+      const data = {
+        en: {
+          title: "Government Scheme Overview",
+          district: "Salem District",
+          year: "2025 Report",
+          jobs: "Jobs Provided: 1,24,000",
+          expense: "Total Expenditure: ₹56.3 Cr"
+        },
+        ta: {
+          title: "அரசுத் திட்டத்தின் மேலோட்டம்",
+          district: "சேலம் மாவட்டம்",
+          year: "2025 செயல்திறன்",
+          jobs: "வழங்கப்பட்ட வேலைகள்: 1,24,000",
+          expense: "மொத்த செலவு: ₹56.3 கோடி"
+        }
+      };
+
+      document.getElementById('title').innerText = data[lang].title;
+      document.getElementById('district').innerText = data[lang].district;
+      document.getElementById('year').innerText = data[lang].year;
+      document.getElementById('jobs').innerText = data[lang].jobs;
+      document.getElementById('expense').innerText = data[lang].expense;
+
+      localStorage.setItem('language', lang);
+    }
+
+    // Chart setup
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2020','2021','2022','2023','2024','2025'],
+        datasets: [
+          {
+            label: "Jobs Provided",
+            data: [95000,105000,110000,115000,120000,124000],
+            backgroundColor: "rgba(0,119,182,0.8)",
+            borderColor: "#005f86",
+            borderWidth: 1
+          },
+          {
+            label: "Total Expenditure (₹ Cr)",
+            data: [40,45,48,52,54,56.3],
+            backgroundColor: "rgba(255,193,7,0.9)",  /* Yellow visible bar */
+            borderColor: "#cc9a00",
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: {
+            display: true,
+            text: 'Scheme Performance (2020–2025)',
+            color: '#222',
+            font: { size: 18, weight: 'bold' }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
