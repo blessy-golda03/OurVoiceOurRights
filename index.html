@@ -4,8 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Our Voice, Our Rights</title>
-
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -23,7 +21,6 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   padding: 30px;
   text-align: center;
-  position: relative;
 }
 h1 { color: #0077b6; }
 select, button {
@@ -38,201 +35,169 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: 0.3s;
 }
 button:hover { background-color: #005f86; }
-.hidden { display: none; }
 .card {
   background: #e3f6ff;
   margin: 15px;
   padding: 15px;
   border-radius: 10px;
+  font-weight: 500;
 }
 footer {
   margin-top: 20px;
   font-size: 14px;
   color: #555;
 }
-.chart-container { width: 100%; height: 320px; }
-.lang-toggle {
-  position: absolute; top: 10px; right: 15px;
-  background: #fff; border: 1px solid #ccc;
-  padding: 5px 10px; border-radius: 5px; cursor: pointer;
+.chart-container {
+  width: 100%;
+  height: 300px;
+  margin-top: 20px;
 }
-.back-btn {
-  position: absolute;
-  top: 10px; left: 15px;
-  background: #0077b6; color: white;
-  border: none; border-radius: 5px;
-  padding: 5px 10px; cursor: pointer;
-}
-.back-btn:hover { background: #005f86; }
+.hidden { display: none; }
 </style>
 </head>
 
 <body>
-
-<!-- Language toggle -->
-<div class="lang-toggle" onclick="toggleLanguage()">தமிழ் / English</div>
-
-<!-- Page 1 -->
 <div class="container" id="page1">
-  <h1 id="appName">Our Voice, Our Rights</h1>
-  <p id="welcomeText">Empowering citizens to view MGNREGA performance in their district</p>
-  <label id="languageLabel">Select Language:</label>
-  <select id="languageSelect">
+  <h1 id="appTitle">Our Voice, Our Rights</h1>
+  <p id="tagline">Empowering citizens to view MGNREGA performance in their district</p>
+
+  <label id="langLabel">Select Language:</label>
+  <select id="language">
     <option value="en">English</option>
     <option value="ta">தமிழ்</option>
   </select>
+
   <label id="districtLabel">Select Your District:</label>
-  <select id="districtSelect">
+  <select id="district">
     <option value="">-- Select District --</option>
+    <option>Chennai</option><option>Coimbatore</option><option>Salem</option>
+    <option>Madurai</option><option>Erode</option><option>Trichy</option>
+    <option>Tirunelveli</option><option>Vellore</option><option>Thoothukudi</option>
   </select>
-  <button onclick="detectLocation()" id="detectBtn">Detect My Location</button>
-  <button onclick="goToDashboard()" id="continueBtn">Continue</button>
+
+  <button id="continueBtn">Continue</button>
 </div>
 
-<!-- Page 2 -->
+<!-- PAGE 2 -->
 <div class="container hidden" id="page2">
-  <button class="back-btn" onclick="goBack()">←</button>
   <h1 id="districtTitle">District Details</h1>
-  <div id="currentData">
-    <h2 id="currentYear">2025 Performance</h2>
-    <div class="card" id="jobsCard">Jobs Provided: 1,24,000</div>
-    <div class="card" id="expCard">Total Expenditure: ₹56.3 Cr</div>
-  </div>
-  <button onclick="showPastPerformance()" id="viewPastBtn">View Past Performance</button>
+  <h2 id="dataYear">2025 Performance</h2>
+
+  <div class="card" id="jobsProvided">Jobs Provided: 1,24,000</div>
+  <div class="card" id="totalExpenditure">Total Expenditure: ₹56.3 Cr</div>
+
+  <button id="chartBtn">View Past Performance</button>
   <div class="chart-container hidden" id="chartContainer">
-    <canvas id="trendChart"></canvas>
+    <canvas id="districtChart"></canvas>
   </div>
-  <footer id="footer">Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
+
+  <button id="backBtn">⬅ Back</button>
+  <footer id="footerText">Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
 </div>
 
 <script>
-const districts = [
-"Chennai","Coimbatore","Salem","Erode","Madurai","Trichy","Vellore","Thoothukudi","Tirunelveli","Thanjavur",
-"Namakkal","Dindigul","Karur","Krishnagiri","Dharmapuri","Nilgiris","Tiruppur","Villupuram","Cuddalore","Kanchipuram",
-"Tiruvannamalai","Ariyalur","Perambalur","Nagapattinam","Pudukkottai","Ramanathapuram","Sivagangai","Theni","Virudhunagar",
-"Tenkasi","Mayiladuthurai","Kallakurichi","Ranipet","Tirupathur","Chengalpattu","Tiruvarur","Thiruvallur","Tiruchendur","Avadi"
-];
+const t = {
+  en: {
+    appTitle:"Our Voice, Our Rights",
+    tagline:"Empowering citizens to view MGNREGA performance in their district",
+    langLabel:"Select Language:",
+    districtLabel:"Select Your District:",
+    continueBtn:"Continue",
+    year:"2025 Performance",
+    jobs:"Jobs Provided: 1,24,000",
+    exp:"Total Expenditure: ₹56.3 Cr",
+    chartBtn:"View Past Performance",
+    footer:"Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026",
+    back:"⬅ Back"
+  },
+  ta: {
+    appTitle:"நமது குரல், நமது உரிமை",
+    tagline:"நமது மாவட்டத்தின் MGNREGA செயல்திறனை காண மக்கள் அதிகாரம்",
+    langLabel:"மொழியைத் தேர்ந்தெடுக்கவும்:",
+    districtLabel:"உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்:",
+    continueBtn:"தொடரவும்",
+    year:"2025 செயல்திறன்",
+    jobs:"வழங்கப்பட்ட வேலைகள்: 1,24,000",
+    exp:"மொத்த செலவு: ₹56.3 கோடி",
+    chartBtn:"கடந்த செயல்திறனைப் பார்க்கவும்",
+    footer:"Build for Bharat Fellowship 2026க்காக Blessy Golda வடிவமைத்து உருவாக்கப்பட்டது",
+    back:"⬅ திரும்ப"
+  }
+};
 
-const districtSelect = document.getElementById('districtSelect');
-districts.forEach(d => {
-  const opt = document.createElement('option');
-  opt.value = d;
-  opt.textContent = d;
-  districtSelect.appendChild(opt);
+let currentLang = "en";
+let chartShown = false;
+
+function updateLanguage() {
+  const text = t[currentLang];
+  document.getElementById("appTitle").textContent = text.appTitle;
+  document.getElementById("tagline").textContent = text.tagline;
+  document.getElementById("langLabel").textContent = text.langLabel;
+  document.getElementById("districtLabel").textContent = text.districtLabel;
+  document.getElementById("continueBtn").textContent = text.continueBtn;
+  if (document.getElementById("dataYear")) {
+    document.getElementById("dataYear").textContent = text.year;
+    document.getElementById("jobsProvided").textContent = text.jobs;
+    document.getElementById("totalExpenditure").textContent = text.exp;
+    document.getElementById("chartBtn").textContent = text.chartBtn;
+    document.getElementById("footerText").textContent = text.footer;
+    document.getElementById("backBtn").textContent = text.back;
+  }
+}
+
+document.getElementById("language").addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  updateLanguage();
 });
 
-// language toggle
-let currentLang = 'en';
-function toggleLanguage(){
-  currentLang = (currentLang === 'en') ? 'ta' : 'en';
-  updateLanguage();
-}
-function updateLanguage(){
-  const t = {
-    en: {
-      appName:"Our Voice, Our Rights",
-      welcomeText:"Empowering citizens to view MGNREGA performance in their district",
-      languageLabel:"Select Language:",
-      districtLabel:"Select Your District:",
-      detectBtn:"Detect My Location",
-      continueBtn:"Continue",
-      currentYear:"2025 Performance",
-      jobsCard:"Jobs Provided: 1,24,000",
-      expCard:"Total Expenditure: ₹56.3 Cr",
-      viewPastBtn:"View Past Performance",
-      footer:"Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026"
-    },
-    ta: {
-      appName:"நமது குரல், நமது உரிமை",
-      welcomeText:"நமது மாவட்டத்தின் MGNREGA செயல்திறனை காண மக்கள் அதிகாரம்",
-      languageLabel:"மொழியைத் தேர்ந்தெடுக்கவும்:",
-      districtLabel:"உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்:",
-      detectBtn:"என் இருப்பிடத்தை கண்டறி",
-      continueBtn:"தொடரவும்",
-      currentYear:"2025 செயல்திறன்",
-      jobsCard:"வழங்கப்பட்ட வேலைகள்: 1,24,000",
-      expCard:"மொத்த செலவு: ₹56.3 கோடி",
-      viewPastBtn:"கடந்த செயல்திறனைப் பார்க்கவும்",
-      footer:"Build for Bharat Fellowship 2026க்காக Blessy Golda வடிவமைத்து உருவாக்கப்பட்டது"
-    }
-  }[currentLang];
-  for (let id in t) document.getElementById(id).textContent = t[id];
-  document.getElementById('languageSelect').value = currentLang;
-}
-
-// location detection
-function detectLocation(){
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(
-      ()=>alert("📍 Detected your location successfully!"),
-      ()=>alert("Unable to detect location.")
-    );
-  } else alert("Geolocation not supported.");
-}
-
-// go to dashboard
-function goToDashboard(){
-  if(!districtSelect.value){ alert("Please select a district!"); return; }
+document.getElementById("continueBtn").addEventListener("click", () => {
+  const district = document.getElementById("district").value;
+  if (!district) {
+    alert(currentLang === "ta" ? "மாவட்டத்தைத் தேர்ந்தெடுக்கவும்!" : "Please select a district!");
+    return;
+  }
   document.getElementById("page1").classList.add("hidden");
   document.getElementById("page2").classList.remove("hidden");
-  document.getElementById("districtTitle").textContent = districtSelect.value + " District";
+  document.getElementById("districtTitle").textContent =
+    currentLang === "ta" ? district + " மாவட்டம்" : district + " District";
   updateLanguage();
-}
+});
 
-// go back to selection page
-function goBack(){
-  document.getElementById("page2").classList.add("hidden");
-  document.getElementById("page1").classList.remove("hidden");
-}
-
-// chart for past performance
-let chartShown = false;
-function showPastPerformance(){
-  document.getElementById("chartContainer").classList.remove("hidden");
-  if(chartShown) return;
+document.getElementById("chartBtn").addEventListener("click", () => {
+  const chartDiv = document.getElementById("chartContainer");
+  chartDiv.classList.remove("hidden");
+  if (chartShown) return;
   chartShown = true;
-  const ctx = document.getElementById("trendChart");
+  const ctx = document.getElementById("districtChart");
   new Chart(ctx, {
     type: "bar",
     data: {
       labels: ["2020","2021","2022","2023","2024","2025"],
       datasets: [
         {
-          label: "Jobs Provided",
-          data: [95000,105000,110000,115000,120000,124000],
-          backgroundColor: "#0077B6",
-          borderColor: "#004c6d",
-          borderWidth: 1.5
+          label: currentLang === "ta" ? "வழங்கப்பட்ட வேலைகள்" : "Jobs Provided",
+          data: [95000,108000,115000,120000,128000,135000],
+          backgroundColor: "#0077b6"
         },
         {
-          label: "Total Expenditure (₹ Cr)",
-          data: [40,45,48,52,54,56.3],
-          backgroundColor: "#FFD700",
-          borderColor: "#b8860b",
-          borderWidth: 1.5
+          label: currentLang === "ta" ? "மொத்த செலவு (₹ கோடி)" : "Total Expenditure (₹ Cr)",
+          data: [35,42,47,50,53,56.3],
+          backgroundColor: "#F4B400"
         }
       ]
     },
-    options: {
-      responsive: true,
-      scales: {
-        x: { stacked: false },
-        y: { beginAtZero: true }
-      },
-      plugins: {
-        legend: { position: "top" },
-        title: {
-          display: true,
-          text: "MGNREGA Scheme Performance (2020–2025)",
-          font: { size: 16, weight: "bold" },
-          color: "#333"
-        }
-      }
-    }
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
-}
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  document.getElementById("page2").classList.add("hidden");
+  document.getElementById("page1").classList.remove("hidden");
+});
+
 updateLanguage();
 </script>
 </body>
