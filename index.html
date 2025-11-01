@@ -1,204 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Our Voice, Our Rights</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bharat Fellowship App</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: #f4f9ff;
+      color: #333;
+      text-align: center;
+    }
 
-<style>
-body {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  background: linear-gradient(to bottom, #c9f1ff, #ffffff);
-  color: #222;
-}
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  padding: 30px;
-  text-align: center;
-}
-h1 { color: #0077b6; }
-select, button {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-button {
-  background-color: #0077b6;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-button:hover { background-color: #005f86; }
-.card {
-  background: #e3f6ff;
-  margin: 15px;
-  padding: 15px;
-  border-radius: 10px;
-  font-weight: 500;
-}
-footer {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #555;
-}
-.chart-container {
-  width: 100%;
-  height: 300px;
-  margin-top: 20px;
-}
-.hidden { display: none; }
-</style>
+    /* Yellow bar */
+    .top-bar {
+      background-color: #fcd53f;
+      height: 10px;
+      width: 100%;
+    }
+
+    .container {
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    select, button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #0077b6;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #0077b6;
+      color: white;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #005f8a;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
 </head>
-
 <body>
-<div class="container" id="page1">
-  <h1 id="appTitle">Our Voice, Our Rights</h1>
-  <p id="tagline">Empowering citizens to view MGNREGA performance in their district</p>
 
-  <label id="langLabel">Select Language:</label>
-  <select id="language">
-    <option value="en">English</option>
-    <option value="ta">தமிழ்</option>
-  </select>
+  <div class="top-bar"></div>
 
-  <label id="districtLabel">Select Your District:</label>
-  <select id="district">
-    <option value="">-- Select District --</option>
-    <option>Chennai</option><option>Coimbatore</option><option>Salem</option>
-    <option>Madurai</option><option>Erode</option><option>Trichy</option>
-    <option>Tirunelveli</option><option>Vellore</option><option>Thoothukudi</option>
-  </select>
+  <div class="container" id="page1">
+    <h1 id="title">Build for Bharat Fellowship 2026</h1>
+    <p id="subtitle">Select your preferred language</p>
 
-  <button id="continueBtn">Continue</button>
-</div>
-
-<!-- PAGE 2 -->
-<div class="container hidden" id="page2">
-  <h1 id="districtTitle">District Details</h1>
-  <h2 id="dataYear">2025 Performance</h2>
-
-  <div class="card" id="jobsProvided">Jobs Provided: 1,24,000</div>
-  <div class="card" id="totalExpenditure">Total Expenditure: ₹56.3 Cr</div>
-
-  <button id="chartBtn">View Past Performance</button>
-  <div class="chart-container hidden" id="chartContainer">
-    <canvas id="districtChart"></canvas>
+    <select id="language">
+      <option value="english">English</option>
+      <option value="tamil">தமிழ்</option>
+    </select>
+    <br>
+    <button onclick="goToPage2()">Continue</button>
   </div>
 
-  <button id="backBtn">⬅ Back</button>
-  <footer id="footerText">Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026</footer>
-</div>
+  <div class="container" id="page2" style="display:none;">
+    <h1 id="appTitle">App Name: Smart District Connect</h1>
+    <p id="districtText">Select your District</p>
+    <select id="district">
+      <option value="">-- Choose District --</option>
+      <option value="Chennai">Chennai</option>
+      <option value="Salem">Salem</option>
+      <option value="Coimbatore">Coimbatore</option>
+      <option value="Madurai">Madurai</option>
+      <option value="Trichy">Trichy</option>
+    </select>
+    <br>
+    <button onclick="autoDetect()">Auto Detect Location</button>
+    <br>
+    <button onclick="finishPage()">Continue</button>
+  </div>
 
-<script>
-const t = {
-  en: {
-    appTitle:"Our Voice, Our Rights",
-    tagline:"Empowering citizens to view MGNREGA performance in their district",
-    langLabel:"Select Language:",
-    districtLabel:"Select Your District:",
-    continueBtn:"Continue",
-    year:"2025 Performance",
-    jobs:"Jobs Provided: 1,24,000",
-    exp:"Total Expenditure: ₹56.3 Cr",
-    chartBtn:"View Past Performance",
-    footer:"Designed & Developed by Blessy Golda for Build for Bharat Fellowship 2026",
-    back:"⬅ Back"
-  },
-  ta: {
-    appTitle:"நமது குரல், நமது உரிமை",
-    tagline:"நமது மாவட்டத்தின் MGNREGA செயல்திறனை காண மக்கள் அதிகாரம்",
-    langLabel:"மொழியைத் தேர்ந்தெடுக்கவும்:",
-    districtLabel:"உங்கள் மாவட்டத்தைத் தேர்ந்தெடுக்கவும்:",
-    continueBtn:"தொடரவும்",
-    year:"2025 செயல்திறன்",
-    jobs:"வழங்கப்பட்ட வேலைகள்: 1,24,000",
-    exp:"மொத்த செலவு: ₹56.3 கோடி",
-    chartBtn:"கடந்த செயல்திறனைப் பார்க்கவும்",
-    footer:"Build for Bharat Fellowship 2026க்காக Blessy Golda வடிவமைத்து உருவாக்கப்பட்டது",
-    back:"⬅ திரும்ப"
-  }
-};
+  <div class="container" id="page3" style="display:none;">
+    <h1 id="finalMessage">Designed & Developed by Blessy Golda</h1>
+    <p>For Build for Bharat Fellowship 2026<br>
+    (Only for the selected district)</p>
+  </div>
 
-let currentLang = "en";
-let chartShown = false;
+  <footer>© 2026 Build for Bharat Fellowship</footer>
 
-function updateLanguage() {
-  const text = t[currentLang];
-  document.getElementById("appTitle").textContent = text.appTitle;
-  document.getElementById("tagline").textContent = text.tagline;
-  document.getElementById("langLabel").textContent = text.langLabel;
-  document.getElementById("districtLabel").textContent = text.districtLabel;
-  document.getElementById("continueBtn").textContent = text.continueBtn;
-  if (document.getElementById("dataYear")) {
-    document.getElementById("dataYear").textContent = text.year;
-    document.getElementById("jobsProvided").textContent = text.jobs;
-    document.getElementById("totalExpenditure").textContent = text.exp;
-    document.getElementById("chartBtn").textContent = text.chartBtn;
-    document.getElementById("footerText").textContent = text.footer;
-    document.getElementById("backBtn").textContent = text.back;
-  }
-}
+  <script>
+    let currentLang = 'english';
 
-document.getElementById("language").addEventListener("change", (e) => {
-  currentLang = e.target.value;
-  updateLanguage();
-});
+    function goToPage2() {
+      currentLang = document.getElementById('language').value;
+      document.getElementById('page1').style.display = 'none';
+      document.getElementById('page2').style.display = 'block';
+      changeLanguage(currentLang);
+    }
 
-document.getElementById("continueBtn").addEventListener("click", () => {
-  const district = document.getElementById("district").value;
-  if (!district) {
-    alert(currentLang === "ta" ? "மாவட்டத்தைத் தேர்ந்தெடுக்கவும்!" : "Please select a district!");
-    return;
-  }
-  document.getElementById("page1").classList.add("hidden");
-  document.getElementById("page2").classList.remove("hidden");
-  document.getElementById("districtTitle").textContent =
-    currentLang === "ta" ? district + " மாவட்டம்" : district + " District";
-  updateLanguage();
-});
+    function changeLanguage(lang) {
+      if (lang === 'tamil') {
+        document.getElementById('title').innerText = "பில்ட் ஃபார் பாரத் ஃபெல்லோஷிப் 2026";
+        document.getElementById('subtitle').innerText = "உங்கள் மொழியை தேர்ந்தெடுக்கவும்";
+        document.getElementById('appTitle').innerText = "ஆப் பெயர்: ஸ்மார்ட் டிஸ்ட்ரிக்ட் கனெக்ட்";
+        document.getElementById('districtText').innerText = "உங்கள் மாவட்டத்தை தேர்ந்தெடுக்கவும்";
+        document.querySelectorAll('button')[0].innerText = "தொடர்க";
+        document.querySelectorAll('button')[1].innerText = "இடத்தை தானாக கண்டறி";
+        document.querySelectorAll('button')[2].innerText = "தொடர்க";
+      } else {
+        document.getElementById('title').innerText = "Build for Bharat Fellowship 2026";
+        document.getElementById('subtitle').innerText = "Select your preferred language";
+        document.getElementById('appTitle').innerText = "App Name: Smart District Connect";
+        document.getElementById('districtText').innerText = "Select your District";
+        document.querySelectorAll('button')[0].innerText = "Continue";
+        document.querySelectorAll('button')[1].innerText = "Auto Detect Location";
+        document.querySelectorAll('button')[2].innerText = "Continue";
+      }
+    }
 
-document.getElementById("chartBtn").addEventListener("click", () => {
-  const chartDiv = document.getElementById("chartContainer");
-  chartDiv.classList.remove("hidden");
-  if (chartShown) return;
-  chartShown = true;
-  const ctx = document.getElementById("districtChart");
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["2020","2021","2022","2023","2024","2025"],
-      datasets: [
-        {
-          label: currentLang === "ta" ? "வழங்கப்பட்ட வேலைகள்" : "Jobs Provided",
-          data: [95000,108000,115000,120000,128000,135000],
-          backgroundColor: "#0077b6"
-        },
-        {
-          label: currentLang === "ta" ? "மொத்த செலவு (₹ கோடி)" : "Total Expenditure (₹ Cr)",
-          data: [35,42,47,50,53,56.3],
-          backgroundColor: "#F4B400"
-        }
-      ]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-  });
-});
+    function autoDetect() {
+      alert("Auto-detecting location...");
+    }
 
-document.getElementById("backBtn").addEventListener("click", () => {
-  document.getElementById("page2").classList.add("hidden");
-  document.getElementById("page1").classList.remove("hidden");
-});
+    function finishPage() {
+      document.getElementById('page2').style.display = 'none';
+      document.getElementById('page3').style.display = 'block';
+    }
+  </script>
 
-updateLanguage();
-</script>
 </body>
 </html>
