@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Voice, Our Rights</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header>
-    <h1>🗳️ Our Voice, Our Rights</h1>
-    <p>Empowering Citizens through the MGNREGA Act</p>
-  </header>
+<body class="gradient-bg">
 
-  <main>
-    <section id="info">
-      <h2>Know Your Rights (English / தமிழ்)</h2>
-      <p><b>English:</b> Every rural household is entitled to 100 days of wage employment each year under MGNREGA.</p>
-      <p><b>தமிழ்:</b> ஒவ்வொரு கிராமப்புறக் குடும்பத்திற்கும் வருடத்திற்கு 100 நாட்கள் கூலி வேலை பெறும் உரிமை உண்டு.</p>
-    </section>
+  <div class="container">
+    <h1 class="app-title">Our Voice, Our Rights</h1>
 
-    <section id="feedback">
-      <h2>🗣️ Share Your Experience</h2>
-      <form id="feedbackForm">
-        <label for="name">Name / பெயர்:</label><br>
-        <input type="text" id="name" name="name" required /><br>
+    <div class="language-section">
+      <label for="language">Select Language:</label>
+      <select id="language">
+        <option value="en">English</option>
+        <option value="ta">தமிழ்</option>
+      </select>
+    </div>
 
-        <label for="district">District / மாவட்டம்:</label><br>
-        <input type="text" id="district" name="district" required /><br>
+    <div class="location-section">
+      <button id="detectLocation">📍 Detect My Location</button>
+      <p id="locationStatus"></p>
 
-        <label for="feedback">Feedback / கருத்து:</label><br>
-        <textarea id="feedback" name="feedback" rows="4" required></textarea><br>
+      <label for="district">Or Select District:</label>
+      <select id="district">
+        <option value="">-- Select District --</option>
+        <option value="Chennai">Chennai</option>
+        <option value="Salem">Salem</option>
+        <option value="Coimbatore">Coimbatore</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Trichy">Trichy</option>
+        <option value="Tirunelveli">Tirunelveli</option>
+        <option value="Erode">Erode</option>
+        <option value="Thoothukudi">Thoothukudi</option>
+        <option value="Dindigul">Dindigul</option>
+        <option value="Vellore">Vellore</option>
+      </select>
+    </div>
 
-        <button type="submit">Submit / சமர்ப்பிக்க</button>
-      </form>
-      <p id="responseMsg"></p>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 Our Voice, Our Rights | MGNREGA Awareness Project</p>
-  </footer>
+    <button id="continueBtn">Continue ➜</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
